@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { api } from "../services/api";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
-import { PollCard, PollCardPros } from '../components/PollCard'
+import { PollCard, PollCardProps } from '../components/PollCard'
 import { Loading } from '../components/Loading'
 import { EmptyPollList } from "../components/EmptyPoolList";
 
@@ -14,7 +14,7 @@ export function Polls() {
     const { navigate } = useNavigation();
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(true);
-    const [polls, setPolls] = useState<PollCardPros[]>([]);
+    const [polls, setPolls] = useState<PollCardProps[]>([]);
 
     async function fetchPolls() {
         try {
@@ -50,12 +50,17 @@ export function Polls() {
             </VStack>
 
             
-            { isLoading 
-            ? <Loading />
-            : <FlatList 
+            { isLoading ? <Loading /> : 
+            <FlatList 
                 data={polls}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <PollCard data={item} />}
+                renderItem={({ item }) => (
+                    <PollCard 
+                        data={item} 
+                        onPress={() => navigate("details", { id: item.id })}
+                    />
+                )
+            }
                 px={5}
                 showsVerticalScrollIndicator={false}
                 _contentContainerStyle={{ pb: 10 }}

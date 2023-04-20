@@ -3,7 +3,7 @@ import { Heading, HStack, Text, VStack } from 'native-base';
 
 import { Participants, ParticipantProps } from './Participants';
 
-export interface PollCardPros {
+export interface PollCardProps {
   id: string;
   code: string;
   title: string;
@@ -19,7 +19,7 @@ export interface PollCardPros {
 }
 
 interface Props extends TouchableOpacityProps {
-  data: PollCardPros;
+  data: PollCardProps;
 }
 
 export function PollCard({ data, ...rest }: Props) {
