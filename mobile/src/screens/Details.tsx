@@ -5,6 +5,7 @@ import { useRoute } from "@react-navigation/native"
 
 import { Header } from "../components/Header";
 import { Loading } from "../components/Loading";
+import { Guesses } from "../components/Guesses";
 import { Option } from "../components/Option";
 import { EmptyMyPollList } from "../components/EmptyMyPoolList";
 import { api } from "../services/api";
@@ -86,6 +87,8 @@ export function Details() {
                             onPress={() => setOptionSelected('ranking')}
                         />
                     </HStack>
+
+                    <Guesses pollId={pollDetails.id} />
                 </VStack>
                 : <EmptyMyPollList code={pollDetails.code} />
             }
