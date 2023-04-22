@@ -28,7 +28,7 @@ export function AuthContextProvider({ children }) {
     const [isUserLoading, setIsUserLoading] = useState(false);
 
     const [request, response, promptAsync] = Google.useAuthRequest({
-        clientId: '662395933649-0n38feehjjefof2j69rt02f2ajk8l8nd.apps.googleusercontent.com',
+        clientId: process.env.CLIENT_ID,
         redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
         scopes: ['profile', 'email']
     })
@@ -46,7 +46,6 @@ export function AuthContextProvider({ children }) {
     }
 
     async function signInWithGoogle(access_token: string) {
-        // Falta guardar os dados do usuário
         console.log('try agr', access_token)
         try {
             setIsUserLoading(true)

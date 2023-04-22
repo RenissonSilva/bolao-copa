@@ -5,12 +5,14 @@ import { api } from "../services/api";
 
 import { Game, GameProps } from '../components/Game'
 import { Loading } from "./Loading";
+import { EmptyMyPollList } from "./EmptyMyPoolList";
 
 interface Props {
   pollId: string;
+  code: string;
 }
 
-export function Guesses({ pollId }: Props) {
+export function Guesses({ pollId, code }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [firstTeamPoints, setFirstTeamPoints] = useState('')
   const [secondTeamPoints, setSecondTeamPoints] = useState('')
@@ -91,6 +93,8 @@ export function Guesses({ pollId }: Props) {
           onGuessConfirm={() => handleGuessConfirm(item.id)}
         />
       )}
+      _contentContainerStyle={{ pb: 10 }}
+      ListEmptyComponent={() => <EmptyMyPollList code={code}/>}
     />
   );
 }
