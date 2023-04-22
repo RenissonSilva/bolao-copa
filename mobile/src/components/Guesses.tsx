@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { api } from "../services/api";
 
 import { Game, GameProps } from '../components/Game'
+import { Loading } from "./Loading";
 
 interface Props {
   pollId: string;
@@ -35,9 +36,48 @@ export function Guesses({ pollId }: Props) {
     }
   }
 
+  async function handleGuessConfirm(gameId: string) {
+    try {
+      if(!firstTeamPoints.trim() || !secondTeamPoints.trim()) {
+        return toast.show({
+          title: 'Informe o placar do palpite',
+          placement: 'top',
+          bgColor: 'red.500'
+        })
+      }
+
+      await api.post(`polls/${pollId}/games/${gameId}/guesses`, {
+        firstTeamPoints: Number(firstTeamPoints),
+        secondTeamPoints: Number(secondTeamPoints)
+      })
+
+      toast.show({
+          title: 'Palpite realizado com sucesso !',
+          placement: 'top',
+          bgColor: 'green.500'
+      })
+
+      fetchGames();
+    } catch (error) {
+      console.log(error);  
+
+      toast.show({
+          title: 'Não foi possível enviar o palpite',
+          placement: 'top',
+          bgColor: 'red.500'
+      })
+    } finally {
+        setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     fetchGames();
   }, [pollId])
+
+  if(isLoading) {
+    return <Loading />
+  }
 
   return (
     <FlatList 
@@ -48,7 +88,7 @@ export function Guesses({ pollId }: Props) {
           data={item}
           setFirstTeamPoints={setFirstTeamPoints}
           setSecondTeamPoints={setSecondTeamPoints}
-          onGuessConfirm={() => {}}
+          onGuessConfirm={() => handleGuessConfirm(item.id)}
         />
       )}
     />
